@@ -1,1 +1,6 @@
-/* Your Global Styles */
+div.dropdown-submenu:nth-child(1){
+    display:none;
+}
+#MenuItem_SettingManagement{
+    display:none;
+}
