@@ -3,6 +3,11 @@
   "texts": {
     "Menu:Home": "Home",
     "Welcome": "Welcome",
-    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io."
+    "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information, visit abp.io.",
+    "Permission:StudentHousing.Housing.Default": "Default housing permission",
+    "Permission:StudentHousing.Housing.View": "View the listed properties",
+    "Permission:StudentHousing.Housing.Create": "Create a new property",
+    "Permission:StudentHousing.Housing.Update": "Update the listed properties",
+    "Permission:StudentHousing.Housing.Delete": "Delete the listed properties"
   }
 }
