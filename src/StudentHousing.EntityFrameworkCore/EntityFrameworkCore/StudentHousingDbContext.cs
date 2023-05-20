@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using StudentHousing.Attachments;
+using StudentHousing.Housing;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.Data;
@@ -45,7 +47,12 @@ namespace StudentHousing.EntityFrameworkCore
         public DbSet<OrganizationUnit> OrganizationUnits { get; set; }
         public DbSet<IdentitySecurityLog> SecurityLogs { get; set; }
         public DbSet<IdentityLinkUser> LinkUsers { get; set; }
-        
+
+        //custom entities
+        public DbSet<Attachment> Attachment { get; set; }
+        public DbSet<Property> Property { get; set; }
+        public DbSet<RegistrationNumber> RegistrationNumber { get; set; }
+
         // Tenant Management
         public DbSet<Tenant> Tenants { get; set; }
         public DbSet<TenantConnectionString> TenantConnectionStrings { get; set; }
