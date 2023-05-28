@@ -8,6 +8,7 @@ namespace StudentHousing.Housing
 {
     public class PropertyDto: AuditedEntityDto<Guid>
     {
+        public string Name { get; set; }
         public string Description { get; set; }
         public List<RegistrationNumberDto> RegistrationNumbers { get; set; }
         public List<AttachmentDto> Attachments { get; set; }

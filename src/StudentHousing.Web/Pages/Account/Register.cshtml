@@ -1,0 +1,90 @@
+﻿@page
+@model StudentHousing.Web.Pages.Account.RegisterModel
+@using Microsoft.AspNetCore.Mvc.Localization
+@using Volo.Abp.Account.Localization
+@using Microsoft.Extensions.Localization
+@using Volo.Abp.AspNetCore.Mvc.UI.Theming
+@using StudentHousing.Localization
+@inject IHtmlLocalizer<AccountResource> L
+@inject IStringLocalizer<StudentHousingResource> _l
+<abp-script src="/Pages/Account/Register.js"></abp-script>
+
+<style>
+    div.card:nth-child(1) {
+        display: none;
+    }
+
+    div.mx-auto:nth-child(1) {
+        max-width: 700px !important;
+    }
+
+    .selectBlock:hover {
+        cursor: pointer;
+    }
+</style>
+
+<form method="post" class="mt-4">
+    <input type='hidden' name='registerType' />
+    <div class="card shadow-sm registerType mx-auto" style='border-radius:20px;'>
+        <div class="card-body p-5">
+            <abp-row class='text-center'><h4>Join as a student or landlord</h4></abp-row>
+            <abp-column-breaker><br /></abp-column-breaker>
+            <abp-row>
+                <abp-column size-sm="_12" size-md='_6' onclick='registerTypeChange(this, this.nextElementSibling)' data-registerType='landlord' name='registerTypeSelect'>
+                    <div class='m-1 p-4 border selectBlock' style='border-radius:5px;'>I'm a landlord, listing my property</div>
+                </abp-column>
+                <abp-column size-sm="_12" size-md='_6' onclick='registerTypeChange(this, this.previousElementSibling)' data-registerType='student' name='registerTypeSelect'>
+                    <div class='m-1 p-4 border selectBlock' style='border-radius:5px;'>I'm a student, looking for accomodation</div>
+                </abp-column>
+            </abp-row>
+            <abp-column-breaker><br /></abp-column-breaker>
+            <abp-row>
+                <button disabled='disabled' type="button" class='btn btn-primary' id='registerBtn'>Create Account</button>
+            </abp-row>
+            <abp-column-breaker><br /></abp-column-breaker>
+            <abp-row class='text-center'>
+                <strong>
+                    Already Registered?
+                    <a href="@Url.Page("./Login", new {returnUrl = Model.ReturnUrl, returnUrlHash = Model.ReturnUrlHash})" class="text-decoration-none">@L["Login"]</a>
+                </strong>
+            </abp-row>
+
+        </div>
+    </div>
+
+    <div class="card shadow-sm rounded register" style='display:none;'>
+        <div class="card-body  textcolors">
+            <h4>@L["Register"]</h4>
+
+            <abp-row>
+                <abp-column size="_6">
+                    <abp-input asp-for="Input.Firstname" label="First Name" auto-focus="true" />
+                </abp-column>
+                <abp-column size="_6">
+                    <abp-input asp-for="Input.Surname" label="Last Name" />
+                </abp-column>
+            </abp-row>
+            <abp-row>
+                <abp-column size="_6">
+                    <abp-input asp-for="Input.UserName" label="Username" />
+                </abp-column>
+                <abp-column size="_6">
+                    <abp-input asp-for="Input.EmailAddress" label="Email Address" />
+                </abp-column>
+            </abp-row>
+            <abp-input asp-for="Input.Password" label="Password" />
+
+            <abp-column-breaker><hr /></abp-column-breaker><br />
+
+            <abp-row>
+                <abp-column size="_2">
+                    <button id="back" class="btn btn-secondary btn-lg w-100 mt-4" type="button">Back</button>
+                </abp-column>
+                <abp-column size="_10">
+                    <abp-button button-type="Primary" type="submit" class="btn-lg mt-4 w-100">@L["Register"]</abp-button>
+                </abp-column>
+            </abp-row>
+        </div>
+    </div>
+
+</form>

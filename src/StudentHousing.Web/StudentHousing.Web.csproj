@@ -22,6 +22,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Pages\Account\Login.cshtml" />
+    <None Include="Pages\Account\Register.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Pages\**\*.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -48,6 +53,10 @@
     <PackageReference Include="Volo.Abp.Account.Web.IdentityServer" Version="5.0.0" />
     <PackageReference Include="Volo.Abp.TenantManagement.Web" Version="5.0.0" />
     <PackageReference Include="Volo.Abp.SettingManagement.Web" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\PropertyImages\" />
   </ItemGroup>
 
 </Project>

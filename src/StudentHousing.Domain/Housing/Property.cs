@@ -10,6 +10,7 @@ namespace StudentHousing.Housing
 {
     public class Property : AuditedEntity<Guid>
     {
+        public string Name { get; set; }
         public string Description { get; set; }
         public List<RegistrationNumber> RegistrationNumbers { get; set; }
         public List<Attachment> Attachments { get; set; }

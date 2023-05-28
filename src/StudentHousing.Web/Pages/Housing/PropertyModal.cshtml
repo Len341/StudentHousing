@@ -1,4 +1,115 @@
 ﻿@page
 @model StudentHousing.Web.Pages.Housing.PropertyModalModel
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@using Microsoft.AspNetCore.Authorization
+@using StudentHousing.Permissions
+@inject IAuthorizationService AuthService
 @{
+    Layout = null;
+}
+@section scripts{
+    <abp-script src='/Pages/Housing/Index.js'></abp-script>
+    <abp-script src='/js/slideshow.js'></abp-script>
+}
+@section styles{
+    <abp-style src='/css/slideshow.css'></abp-style>
+}
+
+@using (Html.BeginForm("PropertyModal", "Housing", FormMethod.Post, new { autocomplete = "off", enctype = "multipart/form-data" }))
+{
+    @if (Model.PropertyId.HasValue)
+    {
+        @Html.HiddenFor(z => z.Property.Id)
+        @Html.HiddenFor(z => z.PropertyId)
+        @Html.HiddenFor(z => z.Property.CreationTime)
+        @Html.HiddenFor(z => z.Property.CreatorId)
+    }
+
+    <abp-modal size=ExtraLarge centered=true>
+        <abp-modal-header title='@(Model.PropertyId.HasValue? $"Edit Property: {Model.Property.Name}" : "New Property")'></abp-modal-header>
+        <abp-modal-body>
+            @if (!Model.PropertyId.HasValue)
+            {
+                @*create*@
+                <abp-form-row>
+                    <abp-column size="_12">
+                        <abp-input asp-for="@Model.Property.Name" label="Property Name"></abp-input>
+                    </abp-column>
+                    <abp-column size="_12">
+                        <abp-input asp-for="@Model.Property.Description" label="Property Description"></abp-input>
+                    </abp-column>
+                    <abp-column size="_12">
+                        <label>Property Images</label><br>
+                        <input type="file" multiple name="PropertyPhotos" accept="image/*" />
+                    </abp-column>
+                </abp-form-row>
+            }
+            else
+            {
+                @*update*@
+                @if (await AuthService.IsGrantedAsync(StudentHousingPermissions.Housing.Update))
+                {
+                    <abp-form-row>
+                        <abp-column size="_12">
+                            <abp-input asp-for="@Model.Property.Name" label="Property Name"></abp-input>
+                        </abp-column>
+                        <abp-column size="_12">
+                            <abp-input asp-for="@Model.Property.Description" label="Property Description"></abp-input>
+                        </abp-column>
+                        <abp-column size="_12">
+                            <label>Property Images</label><br>
+                            <input type="file" multiple name="PropertyPhotos" accept="image/*" />
+                        </abp-column>
+                    </abp-form-row>
+                }
+                else
+                {
+                    <abp-form-row>
+                        <abp-column size="_12">
+                            <abp-input asp-for="@Model.Property.Name" disabled label="Property Name"></abp-input>
+                        </abp-column>
+                        <abp-column size="_12">
+                            <abp-input asp-for="@Model.Property.Description" disabled label="Property Description"></abp-input>
+                        </abp-column>
+                    </abp-form-row>
+                }
+
+                <!-- Slideshow container -->
+                <div class="slideshow-container">
+
+                    <!-- Full-width images with number and caption text -->
+                    @{
+                        for (var i = 0; i < Model.Property?.Attachments?.Count; i++)
+                        {
+                            <div class="mySlides">
+                                <div class="numbertext">@(i + 1) / @(Model.Property?.Attachments?.Count)</div>
+                                <img src="@Model.Property?.Attachments[i].Url" style="width:100%">
+                                <div class="text"></div>
+                            </div>
+                        }
+                    }
+
+
+                    <!-- Next and previous buttons -->
+                    <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                </div>
+                <br>
+
+                <!-- The dots/circles -->
+                <div style="text-align:center">
+                    @{
+                        for (var i = 0; i < Model.Property?.Attachments?.Count; i++)
+                        {
+                            <span class="dot" onclick="currentSlide(@(i+1))"></span>
+                        }
+                    }
+                </div>
+            }
+        </abp-modal-body>
+        @if (await AuthService.IsGrantedAsync(StudentHousingPermissions.Housing.Update))
+        {
+            <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+        }
+    </abp-modal>
 }
