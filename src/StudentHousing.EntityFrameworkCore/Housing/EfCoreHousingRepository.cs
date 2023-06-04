@@ -92,43 +92,49 @@ namespace StudentHousing.Housing
 
         public async Task<Property> UpdateAsync(Property property)
         {
-            var ctx = await GetDbContextAsync();
-            if (property.Attachments != null)
+            try
             {
-                property.Attachments.ForEach(attachment =>
+                var ctx = await GetDbContextAsync();
+                ctx.DetachAllEntities();
+                if (property.Attachments != null)
                 {
-                    if (attachment.Id == 0)
+                    property.Attachments.ForEach(attachment =>
                     {
-                        //add
-                        ctx.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-                    }
-                    else
-                    {
-                        //update
-                        ctx.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    }
-                });
-            }
-            if (property.RegistrationNumbers != null)
-            {
-                property.RegistrationNumbers.ForEach(reg =>
+                        if (attachment.Id == 0)
+                        {
+                            //add
+                            ctx.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Added;
+                        }
+                        else
+                        {
+                            //update
+                            ctx.Entry(attachment).State = Microsoft.EntityFrameworkCore.EntityState.Unchanged;
+                        }
+                    });
+                }
+                if (property.RegistrationNumbers != null)
                 {
-                    if (reg.Id == Guid.Empty)
+                    property.RegistrationNumbers.ForEach(reg =>
                     {
-                        //add
-                        ctx.Entry(reg).State = Microsoft.EntityFrameworkCore.EntityState.Added;
-                    }
-                    else
-                    {
-                        //update
-                        ctx.Entry(reg).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
-                    }
-                });
-            }
+                        if (reg.Id == Guid.Empty)
+                        {
+                            //add
+                            ctx.Entry(reg).State = EntityState.Added;
+                        }
+                        else
+                        {
+                            //update
+                            ctx.Entry(reg).State = EntityState.Modified;
+                        }
+                    });
+                }
 
-            ctx.Update(property);
-            await ctx.SaveChangesAsync();
-            return property;
+                ctx.Update(property);
+                await ctx.SaveChangesAsync();
+                return property;
+            }catch(Exception ex) {
+                throw ex;
+            }
         }
     }
 }

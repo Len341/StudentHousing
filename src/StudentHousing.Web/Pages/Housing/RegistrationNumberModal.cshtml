@@ -1,0 +1,19 @@
+﻿@page
+@model StudentHousing.Web.Pages.Housing.RegistrationNumberModalModel
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("RegistrationNumberModal", "Housing", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.HiddenFor(z => z.PropertyId)
+    <abp-modal>
+        <abp-modal-header title='Add registration number for: @Model.PropertyName'></abp-modal-header>
+        <abp-modal-body>
+            <abp-column>
+                <abp-input asp-for="@Model.RegistrationNumber" label="Registration Number"></abp-input>
+            </abp-column>
+        </abp-modal-body>
+        <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+    </abp-modal>
+}

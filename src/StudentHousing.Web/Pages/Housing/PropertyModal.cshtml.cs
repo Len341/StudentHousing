@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using NUglify.Helpers;
 using StudentHousing.Attachments;
 using StudentHousing.Housing;
+using StudentHousing.Location;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,8 +18,15 @@ namespace StudentHousing.Web.Pages.Housing
     public class PropertyModalModel : AbpPageModel
     {
         private readonly IHousingAppService _housingAppService;
-        public PropertyModalModel(IHousingAppService housingAppService)
+        private readonly ILocationAppService _locationAppService;
+        private readonly IConfiguration _configuration;
+        public PropertyModalModel(
+            IHousingAppService housingAppService,
+            ILocationAppService locationAppService,
+            IConfiguration configuration)
         {
+            _configuration = configuration;
+            _locationAppService = locationAppService;
             _housingAppService = housingAppService;
         }
 
@@ -25,6 +34,8 @@ namespace StudentHousing.Web.Pages.Housing
         public Guid? PropertyId { get; set; }
         [BindProperty]
         public PropertyDto Property { get; set; }
+        [BindProperty]
+        public string DistanceInKm { get; set; }
         public async Task OnGetAsync()
         {
             if (CurrentUser.IsAuthenticated)
@@ -33,6 +44,10 @@ namespace StudentHousing.Web.Pages.Housing
                 {
                     //update
                     Property = await _housingAppService.GetAsync(PropertyId.Value);
+                    if (Property.DistanceFromUniversity.HasValue)
+                    {
+                        DistanceInKm = String.Format("{0:.##}", (double)Property.DistanceFromUniversity.Value/1000);
+                    }
                 }
                 else
                 {
@@ -66,8 +81,26 @@ namespace StudentHousing.Web.Pages.Housing
                         }
                     });
                 }
-                Console.WriteLine(attachments);
+
                 Property.Attachments = attachments;
+                if (string.IsNullOrEmpty(Property.PropertyAddress))
+                {
+                    Property.PropertyLocationCoords = string.Empty;
+                }
+                else
+                {
+                    Property.PropertyLocationCoords = await _locationAppService.GetCoordsFromAddress(Property.PropertyAddress);
+                }
+
+                if (!string.IsNullOrEmpty(Property.PropertyLocationCoords))
+                {
+                    //coords exist
+                    Property.DistanceFromUniversity = await _locationAppService.GetDistanceInMetersAsync(
+                        _configuration["UniversityCoords"],
+                        Property.PropertyLocationCoords
+                    );
+                }
+
                 if (PropertyId.HasValue)
                 {
                     //update

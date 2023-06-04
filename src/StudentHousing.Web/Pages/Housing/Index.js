@@ -14,11 +14,21 @@ var propertyModal = new abp.ModalManager({
     modalClass: 'Property'
 });
 
+var regNoModal = new abp.ModalManager({
+    viewUrl: abp.appPath + 'Housing/RegistrationNumberModal',
+    modalClass: 'RegistrationNumber'
+});
+
+regNoModal.onResult(function () {
+    DataTable.ajax.reload();
+    abp.notify.info('Success!');
+});
+
 propertyModal.onResult(function () {
 
     DataTable.ajax.reload();
     abp.notify.info('Success!');
-})
+});
 
 var responseCallback = function (result) {
 
@@ -37,8 +47,7 @@ abp.modals.Property = function () {
         var $modal = modalManager.getModal();
         var $form = $('form');
 
-        if ($form.find('#PropertyId').val() != '') {
-
+        if ($form.find('#PropertyId').length) {
             let slideIndex = 1;
             showSlides(slideIndex);
         }
@@ -86,7 +95,7 @@ function createDt() {
                                     text: "Add Registration Number",
                                     visible: abp.auth.isGranted('StudentHousing.Housing.Create') || abp.auth.isGranted('StudentHousing.Housing.Update'),
                                     action: function (data) {
-                                        //todo
+                                        regNoModal.open({ propertyId: data.record.id });
                                     }
                                 },
                                 {
@@ -109,6 +118,25 @@ function createDt() {
                 {
                     title: "Property Name",
                     data: "name"
+                },
+                {
+                    title: "Distance From University",
+                    data: "distanceFromUniversity",
+                    render: function (data) {
+                        if (data != null && data != undefined && data != 0) {
+                            return (data / 1000).toFixed(2) + "km"
+                        } else {
+                            return "Unknown";
+                        }
+
+                    }
+                },
+                {
+                    title: "Monthly Price",
+                    data: "monthlyPrice",
+                    render: function (data) {
+                        return "R" + data.toString();
+                    }
                 }
             ]
         })

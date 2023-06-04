@@ -8,9 +8,6 @@
     <abp-script src="/Pages/Housing/Index.js"></abp-script>
     <abp-script src='/js/slideshow.js'></abp-script>
 }
-@section styles{
-    <abp-style src='/css/slideshow.css'></abp-style>
-}
 <div class="container pt-5">
     @if (await AuthService.IsGrantedAsync(StudentHousingPermissions.Housing.Create))
     {

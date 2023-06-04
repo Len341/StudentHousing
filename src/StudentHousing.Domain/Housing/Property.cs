@@ -12,9 +12,11 @@ namespace StudentHousing.Housing
     {
         public string Name { get; set; }
         public string Description { get; set; }
+        public int MonthlyPrice { get; set; }
         public List<RegistrationNumber> RegistrationNumbers { get; set; }
         public List<Attachment> Attachments { get; set; }
-
-        //TODO: Pin properties on map
+        public string PropertyLocationCoords { get; set; }
+        public string PropertyAddress { get; set; }
+        public int? DistanceFromUniversity { get; set; }
     }
 }
