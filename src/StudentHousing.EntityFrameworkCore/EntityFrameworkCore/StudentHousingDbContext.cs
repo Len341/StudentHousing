@@ -53,6 +53,7 @@ namespace StudentHousing.EntityFrameworkCore
         public DbSet<Attachment> Attachment { get; set; }
         public DbSet<Property> Property { get; set; }
         public DbSet<RegistrationNumber> RegistrationNumber { get; set; }
+        public DbSet<PropertyEnquiry> PropertyEnquiry { get; set; }
 
         // Tenant Management
         public DbSet<Tenant> Tenants { get; set; }

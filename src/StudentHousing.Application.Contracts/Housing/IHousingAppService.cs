@@ -12,7 +12,10 @@ namespace StudentHousing.Housing
         Task<PropertyDto> CreateAsync(PropertyDto property);
         Task<PropertyDto> UpdateAsync(PropertyDto property);
         Task DeleteAsync(Guid id);
-        Task<List<PropertyDto>> GetListAsync();
+        Task<List<PropertyDto>> GetListAsync(PropertySearchInput input);
         Task<PropertyDto> GetAsync(Guid id);
+
+        Task<PropertyEnquiryDto> CreatePropertyEnquiryAsync(PropertyEnquiryDto enquiry);
+        Task<List<PropertyEnquiryDto>> GetPropertyEnquiryListAsync();
     }
 }

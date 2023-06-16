@@ -14,5 +14,8 @@ namespace StudentHousing.Housing
         Task DeleteAsync(Guid id);
         Task<List<Property>> GetListAsync();
         Task<Property> GetAsync(Guid id);
+
+        Task<PropertyEnquiry> CreatePropertyEnquiryAsync(PropertyEnquiry enquiry);
+        Task<List<PropertyEnquiry>> GetPropertyEnquiryListAsync();
     }
 }

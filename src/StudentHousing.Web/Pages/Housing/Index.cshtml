@@ -8,25 +8,92 @@
     <abp-script src="/Pages/Housing/Index.js"></abp-script>
     <abp-script src='/js/slideshow.js'></abp-script>
 }
+<style>
+    .container:nth-child(2) {
+        max-width: unset !important;
+        padding: 0px;
+        height: 95vh;
+        margin-top: -10px;
+        background-image: url('/SiteImages/shapes-abstract-typography.jpg');
+        background-repeat: no-repeat;
+    }
+
+    #main-navbar {
+        margin-bottom: 0px !important;
+    }
+
+    button {
+        background-color: #00c0a7 !important;
+        border:none !important;
+    }
+
+    .page-item.active {
+        background-color: #00c0a7 !important;
+        --bs-pagination-border-width: 0px !important;
+        --bs-pagination-active-bg: #00c0a7 !important;
+    }
+    .card{
+        --bs-card-border-width: 0px !important;
+    }
+    .card-header {
+        background-color: #00c0a7;
+        opacity: 0.8;
+    }
+</style>
 <div class="container pt-5">
     @if (await AuthService.IsGrantedAsync(StudentHousingPermissions.Housing.Create))
     {
-            <abp-column size-md="_12" class="text-end mt-3 mb-3">
-                <abp-button id="AddPropertyButton"
-                    text="New Property"
-                    icon="fas fa-plus" class="mt-1"
-                    button-type="Primary" />
-            </abp-column>
+        <abp-column size-md="_12" class="text-end mt-3 mb-3">
+            <abp-button id="AddPropertyButton"
+                        text="New Property"
+                        icon="fas fa-plus" class="mt-1"
+                        button-type="Primary" />
+        </abp-column>
     }
     <abp-card>
         <abp-card-header>
             <abp-row>
                 <abp-column size-md="_6" class="text-left">
-                    <h2>All Properties</h2>
+                    <h2><b style="color:#fff;">All Properties</b></h2>
                 </abp-column>
             </abp-row>
         </abp-card-header>
         <abp-card-body>
+
+            <abp-row>
+                <abp-column size="_4">
+                    <select class="form-control" id="distanceSelect" onchange="search()">
+                        <option value="">Select distance</option>
+                        <option value="0,5">0km - 5km</option>
+                        <option value="5,10">5km - 10km</option>
+                        <option value="10,15">10km - 15km</option>
+                        <option value="15,20">15km - 20km</option>
+                        <option value="20,25">20km - 25km</option>
+                        <option value="25,35">25km - 35km</option>
+                        <option value="35,45">35km - 45km</option>
+                        <option value="45,60">45km - 60km</option>
+                        <option value="60,75">60km - 75km</option>
+                        <option value="75,10000">75km+</option>
+                    </select>
+                </abp-column>
+                <abp-column size="_4">
+                    <select class="form-control" id="priceSelect" onchange="search()">
+                        <option value="">Select price</option>
+                        <option value="0,1000">R0 - R1000</option>
+                        <option value="1000,2000">R1000 - R2000</option>
+                        <option value="2000,3000">R2000 - R3000</option>
+                        <option value="3000,4000">R3000 - R4000</option>
+                        <option value="4000,5000">R4000 - R5000</option>
+                        <option value="5000,6000">R5000 - R6000</option>
+                        <option value="6000,7000">R6000 - R7000</option>
+                        <option value="7000,8000">R7000 - R8000</option>
+                        <option value="8000,9000">R8000 - R9000</option>
+                        <option value="9000,10000">R9000 - R10000</option>
+                        <option value="10000,1000000">R10000+</option>
+                    </select>
+                </abp-column>
+            </abp-row>
+            <abp-column-breaker><hr /></abp-column-breaker>
             <abp-table striped-rows="true" id="PropertiesTable">
             </abp-table>
         </abp-card-body>

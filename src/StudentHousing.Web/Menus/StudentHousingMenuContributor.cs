@@ -24,17 +24,6 @@ namespace StudentHousing.Web.Menus
             var administration = context.Menu.GetAdministration();
             var l = context.GetLocalizer<StudentHousingResource>();
 
-            context.Menu.Items.Insert(
-                0,
-                new ApplicationMenuItem(
-                    StudentHousingMenus.Home,
-                    l["Menu:Home"],
-                    "~/",
-                    icon: "fas fa-home",
-                    order: 0
-                )
-            );
-
             if (await context.IsGrantedAsync(StudentHousingPermissions.Housing.View))
             {
                 context.Menu.AddItem(
@@ -42,7 +31,7 @@ namespace StudentHousing.Web.Menus
                     StudentHousingMenus.Housing,
                     "Housing",
                     "/Housing",
-                    "fa fa-house"
+                    "fas fa-home"
                 ));
             }
 

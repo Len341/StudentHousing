@@ -3,6 +3,8 @@
 @using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
 @using Microsoft.AspNetCore.Authorization
 @using StudentHousing.Permissions
+@using StudentHousing.Roles
+@inject Volo.Abp.Users.ICurrentUser CurrentUser
 @inject IAuthorizationService AuthService
 @{
     Layout = null;
@@ -30,12 +32,12 @@
     }
 
     /*.mySlides img {
-        max-height: 500px;
-        min-height: 500px;
-    }*/
+            max-height: 500px;
+            min-height: 500px;
+        }*/
 
     /* Next & previous buttons */
-    .prev, .next {
+    .prev, .nextPic {
         cursor: pointer;
         position: absolute;
         top: 50%;
@@ -51,7 +53,7 @@
     }
 
     /* Position the "next button" to the right */
-    .next {
+    .nextPic {
         right: 0;
         border-radius: 3px 0 0 3px;
         background-color: black;
@@ -64,7 +66,7 @@
     }
 
         /* On hover, add a black background color with a little bit see-through */
-        .prev:hover, .next:hover {
+        .prev:hover, .nextPic:hover {
             background-color: rgba(0,0,0,0.8);
             opacity: 1;
         }
@@ -108,7 +110,7 @@
     /* Fading animation */
     .fade {
         /*    animation-name: fade;
-        animation-duration: 1.5s;*/
+            animation-duration: 1.5s;*/
     }
 
     @@keyframes fade {
@@ -224,10 +226,19 @@
                         @if (Model.Property.RegistrationNumbers != null && Model.Property.RegistrationNumbers.Any())
                         {
                             <abp-column>
+                                <label><b>Registration Numbers:</b></label><br>
                                 @for (var i = 0; i < Model.Property.RegistrationNumbers.Count; i++)
                                 {
-                                    <span style="display:inline; margin-right: 5px;">@Model.Property.RegistrationNumbers[i].Number</span>
+                                    if (i == Model.Property.RegistrationNumbers.Count - 1)
+                                    {
+                                        <span style="display:inline;">@Model.Property.RegistrationNumbers[i].Number</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="display:inline;">@Model.Property.RegistrationNumbers[i].Number, </span>
+                                    }
                                 }
+                                <br><br>
                             </abp-column>
                         }
                     </abp-form-row>
@@ -251,7 +262,7 @@
 
                     <!-- Next and previous buttons -->
                     <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                    <a class="next" onclick="plusSlides(1)">&#10095;</a>
+                    <a class="nextPic" onclick="plusSlides(1)">&#10095;</a>
                 </div>
                 <br>
 
@@ -264,6 +275,25 @@
                         }
                     }
                 </div>
+
+                @if (CurrentUser.IsInRole(RoleNames.Student))
+                {
+                //create new enquiry
+                    <button style="float:right;" type="button" class="btn btn-primary" id="propEnquire">Create enquiry for this property</button>
+                }
+                else if (CurrentUser.IsInRole(RoleNames.Landlord))
+                {
+                    //view enquiries
+                    <abp-column-breaker><br /><hr /><br /></abp-column-breaker>
+                    <abp-card>
+                        <abp-card-header><h3 style="font-weight:bold; color: #fff;">Property Enquiries</h3></abp-card-header>
+                        <abp-card-body>
+                            <abp-table striped-rows="true" id="PropertyEnquiriesTable"></abp-table>
+                        </abp-card-body>
+                    </abp-card>
+
+                }
+
             }
         </abp-modal-body>
         @if (await AuthService.IsGrantedAsync(StudentHousingPermissions.Housing.Update))

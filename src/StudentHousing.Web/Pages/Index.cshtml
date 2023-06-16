@@ -7,23 +7,22 @@
 @inject ICurrentUser CurrentUser
 @section styles {
     <abp-style src="/Pages/Index.css" />
+    <style>
+        .container:nth-child(2){
+            max-width: unset !important;
+            padding: 0px;
+            margin-top:-10px;
+        }
+
+        #main-navbar {
+            margin-bottom: 0px !important;
+        }
+    </style>
 }
 @section scripts {
     <abp-script src="/Pages/Index.js" />
 }
-<div class="container">
-    <div class="p-5 text-center">
-        <div class="d-inline-block bg-success text-white p-1 h5 rounded mb-4 " role="alert">
-            <h5 class="m-1"> <i class="fas fa-rocket"></i> Congratulations, <strong>StudentHousing</strong> is successfully running!</h5>
-        </div>
-        <h1>Welcome to the Application</h1>
+@*<img style="background-repeat:no-repeat; background-size:cover; 
+            background-image:url('https://image.cnbcfm.com/api/v1/image/106979071-1637620676414Twilight_Aerial_1.jpg?v=1637626827')"/>*@
 
-        <p class="lead px-lg-5 mx-lg-5">@L["LongWelcomeMessage"]</p>
-
-        @if (!CurrentUser.IsAuthenticated)
-        {
-            <a abp-button="Primary" href="~/Account/Login" ><i class="fa fa-sign-in"></i> @L["Login"]</a>
-        }
-
-    </div>
-</div>
+<img style="width: 100%;" src="/SiteImages/house_beautiful_design_70093_2560x1440.jpg" />

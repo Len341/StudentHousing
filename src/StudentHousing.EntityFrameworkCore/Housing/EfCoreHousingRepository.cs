@@ -63,6 +63,14 @@ namespace StudentHousing.Housing
             return property;
         }
 
+        public async Task<PropertyEnquiry> CreatePropertyEnquiryAsync(PropertyEnquiry enquiry)
+        {
+            var ctx = await GetDbContextAsync();
+            await ctx.PropertyEnquiry.AddAsync(enquiry);
+            await ctx.SaveChangesAsync();
+            return enquiry;
+        }
+
         public async Task DeleteAsync(Guid id)
         {
             var ctx = await GetDbContextAsync();
@@ -88,6 +96,12 @@ namespace StudentHousing.Housing
                 .Include(z => z.RegistrationNumbers)
                 .Include(z => z.Attachments)
                 .ToListAsync();
+        }
+
+        public async Task<List<PropertyEnquiry>> GetPropertyEnquiryListAsync()
+        {
+            var ctx = await GetDbContextAsync();
+            return await ctx.PropertyEnquiry.ToListAsync();
         }
 
         public async Task<Property> UpdateAsync(Property property)

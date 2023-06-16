@@ -1,0 +1,31 @@
+﻿@page
+@model StudentHousing.Web.Pages.Housing.PropertyEnquiryModalModel
+@using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Modal
+@{
+    Layout = null;
+}
+@using (Html.BeginForm("PropertyEnquiryModal", "Housing", FormMethod.Post, new { autocomplete = "off" }))
+{
+    @Html.HiddenFor(z => z.StudentId)
+    @Html.HiddenFor(z => z.PropertyId)
+    @Html.HiddenFor(z => z.PropertyEnquiry.PropertyId)
+        <abp-modal>
+            <abp-modal-header title='Create enquiry for property: @Model.PropertyName'></abp-modal-header>
+            <abp-modal-body>
+                <abp-column>
+                    <abp-input asp-for="@Model.PropertyEnquiry.StudentName" label="Student Name"></abp-input>
+                </abp-column>
+                    <abp-column>
+                <abp-input asp-for="@Model.PropertyEnquiry.StudentNumber" label="Student Number"></abp-input>
+            </abp-column>
+            <abp-column>
+                <abp-input asp-for="@Model.PropertyEnquiry.StudentEmail" label="Student Email"></abp-input>
+            </abp-column>
+            <abp-column>
+                <label>Message to landlord</label><br>
+                <textarea class="form-control" asp-for="@Model.PropertyEnquiry.MessageFromStudent"></textarea>
+            </abp-column>
+            </abp-modal-body>
+            <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>
+        </abp-modal>
+}

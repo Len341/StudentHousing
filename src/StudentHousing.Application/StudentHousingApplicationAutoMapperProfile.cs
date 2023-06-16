@@ -14,6 +14,7 @@ namespace StudentHousing
             CreateMap<Attachment, AttachmentDto>().ReverseMap();
             CreateMap<Property, PropertyDto>().ReverseMap();
             CreateMap<RegistrationNumber, RegistrationNumberDto>().ReverseMap();
+            CreateMap<PropertyEnquiry, PropertyEnquiryDto>().ReverseMap();
         }
     }
 }
